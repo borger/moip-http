@@ -54,13 +54,13 @@ class Moip
     public function getRequest($url)
     {
         //return dd((env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/'));
-        $client = new Client();
-        $headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
-        $base_url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/');
+        // $client = new Client();
+        // $headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
+        // $base_url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/');
         //return dd($base_url.$url);
-        $response = $this->moip->get($base_url.$url, [
+        $response = $this->moip->get($this->url.$url, [
             'headers' => [
-                'Authorization' => $headers,
+                'Authorization' => $this->headers,
                 ]
         ]);
 
@@ -69,7 +69,7 @@ class Moip
 
      public function postRequest($url,$form_params)
     {
-        $response = $this->client->post($this->url.$url, [
+        $response = $this->moip->post($this->url.$url, [
             'headers' => [
                 'Authorization' => $this->headers,
                 ],
@@ -139,10 +139,35 @@ class Moip
         return $this->getRequest('accounts/'.$account_id);
     }
 
+    public function bankaccounts_check($account_id=0)
+    {
+        if ($account_id===0)
+        {
+            $account_id = $this->getOwnAccountId();
+        }
+        return $this->getRequest('accounts/'.$account_id.'/bankaccounts');
+    }
+
+    public function bankaccounts_create($form_params)
+    {
+        //ex.: ["bankNumber"=> "237","agencyNumber"=> "12345","agencyCheckNumber"=> "0","accountNumber"=> "12345678","accountCheckNumber"=> "7","type"=> "CHECKING","holder"=> ["taxDocument"=>["type"=> "CPF","number"=> "622.134.533-22"],"fullname"=> "Demo Moip"]]
+        return $this->postOAuthRequest('accounts/'.$this->getOwnAccountId().'/bankaccounts', $form_params);
+    }
+
+    public function balances()
+    {
+        return $this->getRequest('balances');
+    }
+
     public function getOwnAccountId()
     {
         $entries = $this->entries(1);
         return $entries[0]->moipAccount->account;
+    }
+
+    public function transfers($limit=100)
+    {
+        return $this->getRequest('transfers?filters=&limit='.$limit);
     }
 
 }
