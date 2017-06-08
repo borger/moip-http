@@ -1,0 +1,32 @@
+{
+    "name": "prothos/moip",
+    "description": "MOIP Payments Integration via HTTP - Package optimized for Laravel 5",
+    "keywords": ["moip", "gateway", "payment", "laravel", "checkout", "intermediary"],
+    "type": "library",
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/config": "~5.1 || ~5.2",
+        "illuminate/support": "~5.1 || ~5.2",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Prothos\\Moip\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Prothos\\Moip\\Tests\\": "tests/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rafael Borges",
+            "email": "rafael@prothos.com.br"
+        }
+    ]
+}
