@@ -3,7 +3,9 @@
 namespace Prothos\Moip\Providers;
 
 //use Artesaos\Moip\Moip;
+use Prothos\Moip\Moip;
 use Illuminate\Support\ServiceProvider;
+use GuzzleHttp\Client;
 
 class MoipServiceProvider extends ServiceProvider
 {
@@ -19,15 +21,19 @@ class MoipServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*$config_file = __DIR__.'/../../config/moip.php';
+        // $config_file = __DIR__.'/../../config/moip.php';
 
-        if ($this->isLumen()) {
-            $this->app->configure('moip');
-        } else {
-            $this->publishes([$config_file => config_path('moip.php')]);
-        }
+        // if ($this->isLumen()) {
+        //     $this->app->configure('moip');
+        // } else {
+        //     $this->publishes([$config_file => config_path('moip.php')]);
+        // }
 
-        $this->mergeConfigFrom($config_file, 'moip');*/
+        // $this->client = new Client();
+        //$this->headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
+        //$this->url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/')
+
+        // $this->mergeConfigFrom($config_file, 'moip');
     }
 
     /**
@@ -35,7 +41,7 @@ class MoipServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->app->singleton('moip', Moip::class);
+        $this->app->singleton('moip', Moip::class);
     }
 
     /**
@@ -45,7 +51,7 @@ class MoipServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        //return ['moip'];
+        return ['moip'];
     }
 
     /**

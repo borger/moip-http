@@ -15,12 +15,14 @@ class Moip
      **/
     private $app;
 
-    /**
-     * Class Moip sdk.
-     *
-     * @var \Moip\Moip
-     **/
     private $moip;
+
+    // private $client;
+    private $headers;
+    private $url;
+
+    //const $headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
+    //const $url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/');
 
     /**
      * Class constructor.
@@ -30,9 +32,9 @@ class Moip
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->client = new Client();
-        $this->headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
-        $this->url = (config('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/')
+        // $this->client = new Client();
+        // $this->headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
+        // $this->url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/');
     }
 
     /**
@@ -40,22 +42,10 @@ class Moip
      */
     public function start()
     {
-        $client = new Client();
-        $response = $client->post('https://meuconsumo.laager.com.br/oauth/token', [
-            'headers' => [
-                'Authorization' => $this->headers,
-                ],
-            'form_params' => [
-                'grant_type' => 'password',
-                'client_id' => env('LAAGER_CLIENT_ID'),
-                'client_secret' => env('LAAGER_CLIENT_SECRET'),
-                'redirect_uri' => 'urn:ietf:wg:oauth:2.0:oob',
-                'username' => env('LAAGER_USERNAME'),
-                'password' => env('LAAGER_PASSWORD'),
-            ]
-        ]);
 
-        $params = json_decode($response->getBody());
+        $this->moip = $this->app->make(Client::class);
+        $this->headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
+        $this->url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/');
         //$this->moip = $this->app->make(Api::class, [$this->app->make(\Moip\Auth\BasicAuth::class, [config('services.moip.credentials.token'), config('services.moip.credentials.key')]), $this->getHomologated()]);
 
         return $this;
@@ -63,9 +53,14 @@ class Moip
 
     public function getRequest($url)
     {
-        $response = $this->client->get($this->url.$url, [
+        //return dd((env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/'));
+        $client = new Client();
+        $headers = 'Basic '.base64_encode(config('services.moip.credentials.token').':'.config('services.moip.credentials.key'));
+        $base_url = (env('APP_ENV')==='production' ? 'https://api.moip.com.br/v2/' : 'https://sandbox.moip.com.br/v2/');
+        //return dd($base_url.$url);
+        $response = $this->moip->get($base_url.$url, [
             'headers' => [
-                'Authorization' => $this->headers,
+                'Authorization' => $headers,
                 ]
         ]);
 
@@ -99,9 +94,9 @@ class Moip
      *
      * @return \Moip\Resource\Entry
      */
-    public function entries()
+    public function entries($limit=100)
     {
-        return $this->moip->entries();
+        return $this->getRequest('entries?filters=&limit='.$limit);
     }
 
     /**
@@ -109,9 +104,10 @@ class Moip
      *
      * @return \Moip\Resource\Orders
      */
-    public function orders()
+    public function orders($limit=100)
     {
-        return $this->moip->orders();
+        //return $this->moip->orders();
+        return $this->getRequest('orders?filters=&limit='.$limit);
     }
 
     /**
@@ -134,13 +130,19 @@ class Moip
         return $this->moip->multiorders();
     }
 
-    /**
-     * Get endpoint of request.
-     * 
-     * @return \Moip\Moip::ENDPOINT_PRODUCTION|\Moip\Moip::ENDPOINT_SANDBOX
-     */
-    private function getHomologated()
+    public function account_check($account_id=0)
     {
-        return config('services.moip.homologated') === true ? Api::ENDPOINT_PRODUCTION : Api::ENDPOINT_SANDBOX;
+        if ($account_id===0)
+        {
+            $account_id = $this->getOwnAccountId();
+        }
+        return $this->getRequest('accounts/'.$account_id);
     }
+
+    public function getOwnAccountId()
+    {
+        $entries = $this->entries(1);
+        return $entries[0]->moipAccount->account;
+    }
+
 }
