@@ -12,7 +12,7 @@ class MoipServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    //protected $defer = true;
 
     /**
      * Bootstrap the application events.
