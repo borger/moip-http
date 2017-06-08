@@ -35,7 +35,7 @@ class MoipServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('moip', Moip::class);
+        //$this->app->singleton('moip', Moip::class);
     }
 
     /**
@@ -45,7 +45,7 @@ class MoipServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['moip'];
+        //return ['moip'];
     }
 
     /**
