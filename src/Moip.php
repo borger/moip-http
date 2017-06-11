@@ -3,13 +3,13 @@
 namespace Prothos\Moip;
 
 use Prothos\Moip\Contracts\Authentication;
-//use Prothos\Moip\Resource\Account;
-//use Prothos\Moip\Resource\Customer;
+use Prothos\Moip\Resource\Account;
+use Prothos\Moip\Resource\Customer;
 use Prothos\Moip\Resource\Entry;
-//use Prothos\Moip\Resource\Multiorders;
-//use Prothos\Moip\Resource\Orders;
-//use Prothos\Moip\Resource\Payment;
-//use Prothos\Moip\Resource\Transfers;
+use Prothos\Moip\Resource\Multiorders;
+use Prothos\Moip\Resource\Orders;
+use Prothos\Moip\Resource\Payment;
+use Prothos\Moip\Resource\Transfers;
 use Requests_Session;
 
 /**

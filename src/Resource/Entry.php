@@ -40,11 +40,16 @@ class Entry extends MoipResource
         $entry->data->status = $this->getIfSet('status', $response);
         $entry->data->operation = $this->getIfSet('operation', $response);
 
-        if (isset($response->amount)) {
-            $entry->data->amount->total = $this->getIfSet('total', $response->amount);
-            $entry->data->amount->fee = $this->getIfSet('fee', $response->amount);
-            $entry->data->amount->liquid = $this->getIfSet('liquid', $response->amount);
-            $entry->data->amount->currency = $this->getIfSet('currency', $response->amount);
+        if (isset($response->grossAmount)) {
+            $entry->data->amount->total = $this->getIfSet('grossAmount', $response);
+            $entry->data->amount->liquid = $this->getIfSet('liquidAmount', $response);
+            $fees = $this->getIfSet('fees', $response);
+            $entry->data->amount->fee = 0;
+            foreach($fees as $fee)
+            {
+                $entry->data->amount->fee += $this->getIfSet('amount', $fee);
+            }
+            $entry->data->amount->type = $this->getIfSet('type', $response);
         }
 
         if (isset($response->details)) {
@@ -78,9 +83,9 @@ class Entry extends MoipResource
      *
      * @return stdClass
      */
-    public function list()
+    public function list($filters = null)
     {
-        return $this->getListByPath(sprintf('/%s/%s', MoipResource::VERSION, self::PATH));
+        return $this->getListByPath(sprintf('/%s/%s', MoipResource::VERSION, self::PATH),$filters);
     }
 
     /**

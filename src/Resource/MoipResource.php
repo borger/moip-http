@@ -201,7 +201,9 @@ abstract class MoipResource implements JsonSerializable
     {
         $response = $this->httpRequest($path, Requests::GET);
 
-        return $this->populate($response);
+        //return $this->populate($response);
+        
+        return $response;
     }
 
     /**
@@ -211,9 +213,23 @@ abstract class MoipResource implements JsonSerializable
      *
      * @return stdClass
      */
-    public function getListByPath($path)
+    public function getListByPath($path,$filters)
     {
+        if(isset($filters) && count($filters))
+        {
+            $path = $path.'?filters=';
+            foreach($filters as $key => $filter)
+            {
+                $path = $path.'&'.$key.'='.$filter;
+            }
+        }
+
         $response = $this->httpRequest($path, Requests::GET);
+
+        // foreach($response as $single)
+        // {
+
+        // }
 
         return $response;
     }
