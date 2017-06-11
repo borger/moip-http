@@ -7,7 +7,7 @@ use Prothos\Moip\MoipOld;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
 
-class MoipServiceProvider extends ServiceProvider
+class MoipServiceProviderOld extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
