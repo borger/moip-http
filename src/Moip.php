@@ -200,23 +200,4 @@ class Moip
     {
         return $this->endpoint;
     }
-
-    /**
-     * Start Moip sdk.
-     */
-    public function start()
-    {
-        return new self(new \Prothos\Moip\Auth\BasicAuth(config('services.moip.credentials.token'), config('services.moip.credentials.key')),$this->setEndpoint());
-        //$this->app->make(self::class, [$this->app->make(Prothos\Moip\Auth\BasicAuth::class, [config('services.moip.credentials.token'), config('services.moip.credentials.key')]), $this->getHomologated()]);
-    }
-
-    /**
-     * Get endpoint of request.
-     * 
-     * @return \Moip\Moip::ENDPOINT_PRODUCTION|\Moip\Moip::ENDPOINT_SANDBOX
-     */
-    private function setEndpoint()
-    {
-        return env('APP_ENV') === 'production' ? self::ENDPOINT_PRODUCTION : self::ENDPOINT_SANDBOX;
-    }
 }

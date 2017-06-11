@@ -156,6 +156,43 @@ class Payment extends MoipResource
     }
 
     /**
+     * Refund an payment in MoIP.
+     *
+     * @param string $id_moip Id MoIP payment
+     *
+     * @return stdClass
+     */
+    public function refund($id_moip,$bank_account=null)
+    {
+        $moip=start_moip();
+        $payment = $moip->orders()->payments()->get($id_moip);
+        $payload = new stdClass;
+        $payload->amount = $payment->amount->total;
+        if(!isset($bank_account) && $payment->fundingInstrument->method==="BOLETO")
+        {
+            throw new \Exception('Please, inform the bank account information.');
+        }
+        if($payment->fundingInstrument->method==="BOLETO")
+        {
+            $payload->refundingInstrument = new stdClass;
+            $payload->refundingInstrument->method = 'BANK_ACCOUNT';
+            $bank_account = json_decode(json_encode($bank_account));
+            $bank_account->agencyNumber = str_pad($bank_account->agencyNumber, 4, '0', STR_PAD_LEFT);
+            $bank_account->accountNumber = str_pad($bank_account->accountNumber, 8, '0', STR_PAD_LEFT);
+            //str_pad($string, 8, '0', STR_PAD_LEFT)
+            // Sample Bank Account: ['type'=>'CHECKING','bankNumber'=>'237','agencyNumber'=>'12345','agencyCheckNumber'=>'0','accountNumber'=>'12345678','accountCheckNumber'=>'7','holder'=>['fullname'=>'Demo Moip','taxDocument'=>['type'=>'CPF','number'=>'22222222222']]]
+            $payload->refundingInstrument->bankAccount = $bank_account;
+            dd($payload);
+        }
+
+        $path = sprintf('/%s/%s/%s/refunds', MoipResource::VERSION, self::PATH, $id_moip);
+        
+        $response = $this->httpRequest($path, Requests::POST, $payload);
+
+        return $response;
+    }
+
+    /**
      * Get id MoIP payment.
      *
      *
