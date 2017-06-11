@@ -101,16 +101,29 @@ class Account extends MoipResource
      *
      * @return stdClass
      */
-    public function get($moip_id = null)
+    public function get($moip_id)
     {
-        if (isset($moip_id)){
-            return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $moip_id));
-        }
-        else
-        {
-            return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $this->getOwnAccountId()));
-        }
+        return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $moip_id));
+    }
 
+    /**
+     * Get self account.
+     *
+     * @return stdClass
+     */
+    public function self()
+    {
+        return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $this->getOwnAccountId()));
+    }
+
+    /**
+     * Get account balance.
+     *
+     * @return stdClass
+     */
+    public function balance()
+    {
+        return $this->getByPath(sprintf('/%s/%s', MoipResource::VERSION, 'balances'));
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Prothos\Moip;
 
 use Prothos\Moip\Contracts\Authentication;
 use Prothos\Moip\Resource\Account;
-use Prothos\Moip\Resource\Balance;
 use Prothos\Moip\Resource\Customer;
 use Prothos\Moip\Resource\Entry;
 use Prothos\Moip\Resource\Multiorders;
@@ -134,16 +133,6 @@ class Moip
     public function accounts()
     {
         return new Account($this);
-    }
-
-    /**
-     * Create a new Account instance.
-     *
-     * @return \Moip\Resource\Account
-     */
-    public function balances()
-    {
-        return new Balance($this);
     }
 
     /**
