@@ -179,7 +179,6 @@ class Payment extends MoipResource
             $bank_account = json_decode(json_encode($bank_account));
             $bank_account->agencyNumber = str_pad($bank_account->agencyNumber, 4, '0', STR_PAD_LEFT);
             $bank_account->accountNumber = str_pad($bank_account->accountNumber, 8, '0', STR_PAD_LEFT);
-            //str_pad($string, 8, '0', STR_PAD_LEFT)
             // Sample Bank Account: ['type'=>'CHECKING','bankNumber'=>'237','agencyNumber'=>'12345','agencyCheckNumber'=>'0','accountNumber'=>'12345678','accountCheckNumber'=>'7','holder'=>['fullname'=>'Demo Moip','taxDocument'=>['type'=>'CPF','number'=>'22222222222']]]
             $payload->refundingInstrument->bankAccount = $bank_account;
             dd($payload);
