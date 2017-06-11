@@ -6,7 +6,7 @@ use Illuminate\Contracts\Foundation\Application;
 use GuzzleHttp\Client;
 //use Moip\Moip as Api;
 
-class Moip
+class MoipOld
 {
     /**
      * The Laravel Application.
