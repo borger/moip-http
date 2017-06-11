@@ -205,6 +205,20 @@ abstract class MoipResource implements JsonSerializable
     }
 
     /**
+     * Find by path.
+     *
+     * @param string $path
+     *
+     * @return stdClass
+     */
+    public function getListByPath($path)
+    {
+        $response = $this->httpRequest($path, Requests::GET);
+
+        return $response;
+    }
+
+    /**
      * Create a new item in Moip.
      *
      * @param string $path

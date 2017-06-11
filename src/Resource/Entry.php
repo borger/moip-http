@@ -80,7 +80,7 @@ class Entry extends MoipResource
      */
     public function list()
     {
-        return $this->getByPath(sprintf('/%s/%s', MoipResource::VERSION, self::PATH);
+        return $this->getListByPath(sprintf('/%s/%s', MoipResource::VERSION, self::PATH));
     }
 
     /**

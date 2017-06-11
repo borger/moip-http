@@ -12,7 +12,7 @@ if (!function_exists('to_cents')) {
      */
     function to_cents(float $amount)
     {
-        return Moip\Helper\Utils::toCents($amount);
+        return Prothos\Moip\Helper\Utils::toCents($amount);
     }
 }
 
@@ -38,5 +38,20 @@ if (!function_exists('pr')) {
         printf($template, trim(print_r($var, true)));
 
         return $var;
+    }
+}
+
+if (!function_exists('start_moip'))
+{
+    function start_moip($auth = null)
+    {
+        if ($auth === 'oauth')
+        {
+            //auth via oauth
+        }
+        else
+        {
+            return new Prothos\Moip\Moip(new Prothos\Moip\Auth\BasicAuth(config('services.moip.credentials.token'), config('services.moip.credentials.key')),(env('APP_ENV') === 'production' ? self::ENDPOINT_PRODUCTION : self::ENDPOINT_SANDBOX));
+        }
     }
 }
