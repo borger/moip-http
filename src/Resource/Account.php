@@ -3,6 +3,7 @@
 namespace Prothos\Moip\Resource;
 
 use stdClass;
+use Prothos\Moip\Resource\Entry;
 
 /**
  * Class Account.
@@ -100,9 +101,28 @@ class Account extends MoipResource
      *
      * @return stdClass
      */
-    public function get($moip_id)
+    public function get($moip_id = null)
     {
-        return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $moip_id));
+        if (isset($moip_id)){
+            return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $moip_id));
+        }
+        else
+        {
+            return $this->getByPath(sprintf('/%s/%s/%s', MoipResource::VERSION, self::PATH, $this->getOwnAccountId()));
+        }
+
+    }
+
+    /**
+     * Find self account id.
+     *
+     * @return String
+     */
+    public function getOwnAccountId()
+    {
+        $moip = start_moip();
+        $entries = $moip->entries()->list();
+        return $entries[0]->moipAccount->account;
     }
 
     /**

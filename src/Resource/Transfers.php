@@ -102,6 +102,16 @@ class Transfers extends MoipResource
     }
 
     /**
+     * List transfers in api.
+     *
+     * @return stdClass
+     */
+    public function list($filters = null)
+    {
+        return $this->getListByPath(sprintf('/%s/%s', MoipResource::VERSION, self::PATH),$filters);
+    }
+
+    /**
      * Execute Tranfers.
      *
      * @return Transfers
