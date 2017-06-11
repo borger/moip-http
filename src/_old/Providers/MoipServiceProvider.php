@@ -2,7 +2,8 @@
 
 namespace Prothos\Moip\Providers;
 
-use Prothos\Moip;
+//use Artesaos\Moip\Moip;
+use Prothos\Moip\Moip;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
 
