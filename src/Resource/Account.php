@@ -127,6 +127,16 @@ class Account extends MoipResource
     }
 
     /**
+     * Get self bank accounts.
+     *
+     * @return stdClass
+     */
+    public function bank_accounts()
+    {
+        return $this->getByPath(sprintf('/%s/%s/%s/bankaccounts', MoipResource::VERSION, self::PATH, $this->getOwnAccountId()));
+    }
+
+    /**
      * Find self account id.
      *
      * @return String
