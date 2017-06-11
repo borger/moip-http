@@ -5,9 +5,7 @@
     "type": "library",
     "require": {
         "php": ">=5.5.9",
-        "guzzlehttp/guzzle": "^6.2",
-        "moip/moip-sdk-php": "^1.2",
-        "artesaos/moip": "^1.0"
+        "rmccue/requests": ">=1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2"
