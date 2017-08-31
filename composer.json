@@ -23,6 +23,13 @@
             "Prothos\\Moip\\Tests\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Prothos\\Moip\\Providers\\MoipServiceProvider"
+            ]
+        }
+    },
     "license": "MIT",
     "authors": [
         {

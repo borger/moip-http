@@ -4,7 +4,6 @@ namespace Prothos\Moip\Providers;
 
 use Prothos\Moip;
 use Illuminate\Support\ServiceProvider;
-use GuzzleHttp\Client;
 
 class MoipServiceProvider extends ServiceProvider
 {

@@ -89,6 +89,17 @@ class Entry extends MoipResource
     }
 
     /**
+     * Filter entries in api.
+     *
+     * @return stdClass
+     */
+    public function filter($filters = null)
+    {
+        
+        return $this->getListByPath(sprintf('/%s/%s', MoipResource::VERSION, self::PATH),$filters);
+    }
+
+    /**
      * Get id from entry.
      *
      * @return string Event ID that generated the launch.
